@@ -16,14 +16,25 @@ public class LinkedList<T> implements List<T> {
         return this.tail;
     }
 
+
+
     // Interface methods
 
     public void addAtIndex(T data, int index) {
+        System.out.println("add at index call");
         Node<T> current = head;
         Node<T> temp;
         int indexCounter = 0;
 
-        if (index > this.size - 1 || index < 0) {
+        if (index > this.size || index < 0) {
+            return;
+        }
+
+        if (this.size == 0) {
+            System.out.println("Adding to head");
+            head = new Node<T>(data);
+            this.size = this.size + 1;
+            System.out.println("First node set to: " + head.getData());
             return;
         }
         
@@ -32,15 +43,15 @@ public class LinkedList<T> implements List<T> {
 
 
             if (indexCounter == index) {
-               temp.next = new Node(data, current.next);
+               temp.setNext(new Node<T>(data, current.getNext()));
                return;
             }
 
-            if (current.next == null) {
+            if (current.getNext() == null) {
                 return;
             }
-            
-            current = current.next;
+
+            current = current.getNext();
             indexCounter++;
         }
     }
@@ -55,11 +66,11 @@ public class LinkedList<T> implements List<T> {
 
         while (current != null) {
             if (indexCounter == index) {
-                return current.data;
+                return current.getData();
             }
 
-            if (current.next != null) {
-                current = current.next;
+            if (current.getNext() != null) {
+                current = current.getNext();
                 indexCounter++;
             } else {
                 break;
@@ -80,8 +91,8 @@ public class LinkedList<T> implements List<T> {
         }
 
         if (index == 0) {
-            removedData = head.data;
-            head = head.next;
+            removedData = head.getData();
+            head = head.getNext();
             this.size = size - 1;
             return removedData;
         }
@@ -93,22 +104,22 @@ public class LinkedList<T> implements List<T> {
 
             if (indexCounter == index) {
 
-                if (current.next == null) {
-                    removedData = current.data;
-                    previous.next = null;
+                if (current.getNext() == null) {
+                    removedData = current.getData();
+                    previous.setNext(null);
                     this.size = this.size - 1;
                     return removedData;
                 }
 
-                removedData = current.data;
-                previous.next = current.next;
+                removedData = current.getData();
+                previous.setNext(current.getNext());
                 this.size = this.size - 1;
                 return removedData;
             }
 
 
             indexCounter++;
-            current = current.next;
+            current = current.getNext();
         }
         return null;
     }
@@ -123,13 +134,13 @@ public class LinkedList<T> implements List<T> {
         }
 
         while (current != null) {
-            if (current.data == data) {
-                if (data == head.data) {
-                    head = current.next;
+            if (current.getNext() == data) {
+                if (data == head.getData()) {
+                    head = current.getNext();
                     break;
                 }
-                temp = current.next;
-                current.next = temp.next;
+                temp = current.getNext();
+                current.setNext(temp.getNext());
                 temp = null;
             }
         }
@@ -141,13 +152,13 @@ public class LinkedList<T> implements List<T> {
         Node<T> current = head;
         Node<T> temp;
         while(current != null) {
-            if (current.next != null) {
-                temp = current.next;
+            if (current.getNext() != null) {
+                temp = current.getNext();
                 current = null;
                 current = temp;
                 temp = null;
             }
-            if (current.next == null) {
+            if (current.getNext() == null) {
                 current = null;
             }
         }
@@ -163,5 +174,20 @@ public class LinkedList<T> implements List<T> {
 
     public int size() {
         return this.size;
+    }
+
+    public static void main(String argv[]) {
+        LinkedList<String> stringList = new LinkedList<String>();
+        System.out.println("isEmpty(): " + stringList.isEmpty());
+        stringList.addAtIndex("First Song", 0);
+        System.out.println("getAtIndex(0): " + stringList.getAtIndex(0));
+        System.out.println("isEmpty() still: " + stringList.isEmpty());
+        stringList.addAtIndex("Second Song", 1);
+        stringList.addAtIndex("Third Song", 2);
+        System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(2));
+        stringList.removeAtIndex(1);
+        System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1));
+        stringList.clear();
+        System.out.println("getAtIndex(): " + stringList.getAtIndex(0));
     }
 }
