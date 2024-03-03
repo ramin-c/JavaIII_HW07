@@ -38,16 +38,21 @@ public class LinkedList<T> implements List<T> {
             return;
         }
         
-        while (current != null) {
+        while (indexCounter <= this.size) {
+            System.out.println("indexCounter = " + indexCounter + ". this.size = " + this.size);
             temp = current;
 
-
-            if (indexCounter == index) {
-               temp.setNext(new Node<T>(data, current.getNext()));
-               return;
+            if (current.getNext() == null && indexCounter + 1 == index) {
+                current.setNext(new Node<T>(data));
+                this.size++;
+                return;
             }
 
-            if (current.getNext() == null) {
+            if (indexCounter == index) {
+                temp = new Node<T>(data);
+                temp.setNext(current);
+                System.out.println("New node. node.data = " + temp.getData());
+                this.size++;
                 return;
             }
 
@@ -186,7 +191,7 @@ public class LinkedList<T> implements List<T> {
         stringList.addAtIndex("Third Song", 2);
         System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(2));
         stringList.removeAtIndex(1);
-        System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1));
+        System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(2));
         stringList.clear();
         System.out.println("getAtIndex(): " + stringList.getAtIndex(0));
     }
