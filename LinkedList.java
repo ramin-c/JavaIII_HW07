@@ -31,15 +31,12 @@ public class LinkedList<T> implements List<T> {
         }
 
         if (this.size == 0) {
-            System.out.println("Adding to head");
             head = new Node<T>(data);
             this.size = this.size + 1;
-            System.out.println("First node set to: " + head.getData());
             return;
         }
         
         while (indexCounter <= this.size) {
-            System.out.println("indexCounter = " + indexCounter + ". this.size = " + this.size);
             temp = current;
 
             if (current.getNext() == null && indexCounter + 1 == index) {
@@ -51,7 +48,6 @@ public class LinkedList<T> implements List<T> {
             if (indexCounter == index) {
                 temp = new Node<T>(data);
                 temp.setNext(current);
-                System.out.println("New node. node.data = " + temp.getData());
                 this.size++;
                 return;
             }
@@ -81,19 +77,17 @@ public class LinkedList<T> implements List<T> {
                 break;
             }
         }
-        
         return null;
     }
 
     public T removeAtIndex(int index) {
         Node<T> current = head;
-        Node<T> previous;
-        T removedData;
-        int indexCounter = 0;
-
+   
         if (current == null) {
             return null;
         }
+
+        T removedData;
 
         if (index == 0) {
             removedData = head.getData();
@@ -102,55 +96,66 @@ public class LinkedList<T> implements List<T> {
             return removedData;
         }
 
-        while (current != null) {
-            previous = current;
+        int indexCounter = 1;
+        Node<T> previous = current;
 
-            
+        while (current != null) {
+            current = current.getNext();
 
             if (indexCounter == index) {
 
-                if (current.getNext() == null) {
-                    removedData = current.getData();
-                    previous.setNext(null);
-                    this.size = this.size - 1;
-                    return removedData;
-                }
-
                 removedData = current.getData();
-                previous.setNext(current.getNext());
+
+                if (current.getNext() == null) {
+                    previous.setNext(null);
+                } else {
+                    previous.setNext(current.getNext());          
+                }
                 this.size = this.size - 1;
                 return removedData;
             }
-
-
+            previous = previous.getNext();
             indexCounter++;
-            current = current.getNext();
         }
         return null;
     }
 
     public T remove(T data) {
         Node<T> current = head;
-        Node<T> temp;
+        T removedData;
 
         if (current == null) {
             this.size = 0;
             return null;
         }
 
-        while (current != null) {
-            if (current.getNext() == data) {
-                if (data == head.getData()) {
-                    head = current.getNext();
-                    break;
-                }
-                temp = current.getNext();
-                current.setNext(temp.getNext());
-                temp = null;
-            }
+        Node<T> previous = current;
+
+        if (current.getData() == null) {
+            return null;
+        } else if (current.getData() == data) {
+            head = current.getNext();
+            this.size = this.size - 1;
+            removedData = current.getData();
+            return removedData;
         }
-        this.size = this.size - 1;
-        return data;
+
+        current = current.getNext();
+
+        while (current.getData() != null) {
+            if (current.getData() == data) {
+                previous.setNext(current.getNext());
+                removedData = current.getData();
+                this.size = this.size - 1;
+                return removedData;
+            }
+            if (current.getNext() == null) {
+                return null;
+            }
+            current = current.getNext();
+            previous = previous.getNext();
+        }
+        return null;
     }
 
     public void clear() {
@@ -190,9 +195,10 @@ public class LinkedList<T> implements List<T> {
         stringList.addAtIndex("Second Song", 1);
         stringList.addAtIndex("Third Song", 2);
         System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(2));
-        stringList.removeAtIndex(1);
+        //stringList.removeAtIndex(1);
+        stringList.remove("First Song");
         System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(2));
-        stringList.clear();
-        System.out.println("getAtIndex(): " + stringList.getAtIndex(0));
+        //stringList.clear();
+        //System.out.println("getAtIndex(): " + stringList.getAtIndex(0));
     }
 }
