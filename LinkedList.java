@@ -21,7 +21,6 @@ public class LinkedList<T> implements List<T> {
     // Interface methods
 
     public void addAtIndex(T data, int index) {
-        System.out.println("add at index call");
         Node<T> current = head;
         Node<T> temp;
         int indexCounter = 0;
@@ -58,12 +57,13 @@ public class LinkedList<T> implements List<T> {
     }
 
     public T getAtIndex(int index) {
-        Node<T> current = head;
-        int indexCounter = 0;
 
         if (index > this.size - 1 || index < 0) {
             return null;
         }
+
+        Node<T> current = head;
+        int indexCounter = 0;
 
         while (current != null) {
             if (indexCounter == index) {
@@ -81,6 +81,11 @@ public class LinkedList<T> implements List<T> {
     }
 
     public T removeAtIndex(int index) {
+
+        if (index > this.size - 1 || index < 0) {
+            return null;
+        }
+
         Node<T> current = head;
    
         if (current == null) {
@@ -167,8 +172,7 @@ public class LinkedList<T> implements List<T> {
                 current = null;
                 current = temp;
                 temp = null;
-            }
-            if (current.getNext() == null) {
+            } else {
                 current = null;
             }
         }
@@ -196,7 +200,7 @@ public class LinkedList<T> implements List<T> {
         stringList.addAtIndex("Third Song", 2);
         System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(2));
         //stringList.removeAtIndex(1);
-        stringList.remove("First Song");
+        stringList.remove("Third Song");
         System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(2));
         //stringList.clear();
         //System.out.println("getAtIndex(): " + stringList.getAtIndex(0));
