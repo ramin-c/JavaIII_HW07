@@ -116,39 +116,27 @@ public class LinkedList<T> implements List<T> {
             }
             this.size = size - 1;
             return removeData;
-        } else if (current.getNext() != null) {
-            current = current.getNext();
+        }
 
-        int indexCounter = 1;
+
+
+        // case: index > 0
+
+        int indexCounter = 0;
         Node<T> previous = current;
-        
+            
         while (current != null) {
 
-            if (indexCounter == index) {
-
-                if (current.getData() == null) {
-                    removeData = null;
-                } else {
-                    removeData = current.getData();
-                }
-
-                if (current.getNext() == null) {
-                    previous.setNext(null);
-                } else {
-                    previous.setNext(current.getNext());          
-                }
+            if (index == indexCounter) {
+                previous.setNext(current.getNext());
+                removeData = current.getData();
+                current = null;
                 this.size = this.size - 1;
                 return removeData;
-            }
-
-            if (current.getNext() != null) {
-                current = current.getNext();
             } else {
-                current = null;
-            }
-            previous = previous.getNext();
-
-            indexCounter++;
+                previous = current;
+                current = current.getNext();
+                indexCounter++;
             }
         }
         return null;
@@ -156,43 +144,48 @@ public class LinkedList<T> implements List<T> {
 
     public T remove(T data) throws NoSuchElementException {
 
-        if (head == null) {
+        if (this.head == null) {
             throw new NoSuchElementException();
         }
 
-        Node<T> current = head;
         T removedData;
 
-        Node<T> previous = current;
+        if (this.head.getData() == data) {
+            removedData = head.getData();
 
-        if (current.getData() == null) {
-            return null;
-        } else if (current.getData() == data) {
-            if (current.getNext() != null) {
-                head = current.getNext();
+            if (this.head == this.tail) {
+                this.tail = null;
+            }
+
+            if (this.head.getNext() != null) {
+                this.head = this.head.getNext();
             } else {
-                head = null;
+                this.head = null;
             }
             this.size = this.size - 1;
-            removedData = current.getData();
-            current = null;
             return removedData;
         }
 
-        current = current.getNext();
+        Node<T> current = this.head.getNext();
+        Node<T> previous = this.head;
 
-        while (current.getData() != null) {
+
+        while (current != null) {
+
             if (current.getData() == data) {
                 previous.setNext(current.getNext());
                 removedData = current.getData();
                 this.size = this.size - 1;
+
+                if (current == this.tail) {
+                    this.tail = previous;
+                }
+
                 return removedData;
             }
-            if (current.getNext() == null) {
-                break;
-            }
+
+            previous = current;
             current = current.getNext();
-            previous = previous.getNext();
         }
         throw new NoSuchElementException();
     }
@@ -232,31 +225,33 @@ public class LinkedList<T> implements List<T> {
         LinkedList<String> stringList = new LinkedList<String>();
         //stringList.remove("First Song");
         stringList.addAtIndex("First Song", 0);
-        System.out.println("isEmpty(): " + stringList.isEmpty());
-        System.out.println("size(): " + stringList.size());
+
+        //System.out.println("isEmpty(): " + stringList.isEmpty());
+        //System.out.println("size(): " + stringList.size());
         
-        System.out.println("getAtIndex(0): " + stringList.getAtIndex(0));
-        System.out.println("isEmpty() still: " + stringList.isEmpty());
+        //System.out.println("getAtIndex(0): " + stringList.getAtIndex(0));
+        //System.out.println("isEmpty() still: " + stringList.isEmpty());
         stringList.addAtIndex("Second Song", 1);
         stringList.addAtIndex("Third Song", 2);
         stringList.addAtIndex("Before #2", 0);
         stringList.addAtIndex("Before #1", 0);
 
-        //stringList.removeAtIndex(0);
-        System.out.println("getAtIndex(): " + stringList.getAtIndex(0));
-        System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1));
-        System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(2));
-        System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(3));
-        System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(2) + stringList.getAtIndex(3) + stringList.getAtIndex(4));
+        //stringList.removeAtIndex(2);
+        //System.out.println("getAtIndex(): " + stringList.getAtIndex(0));
+        //System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1));
+        //System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(2));
+        System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(2) + stringList.getAtIndex(3));
+        //System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(2) + stringList.getAtIndex(3) + stringList.getAtIndex(4));
         //stringList.removeAtIndex(-100);
-        //stringList.remove("Third Song");
+        stringList.remove("Before #1");
+        System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1) + stringList.getAtIndex(2) + stringList.getAtIndex(3));
         //System.out.println("getAtIndex(): " + stringList.getAtIndex(0) + stringList.getAtIndex(1));
 
         //System.out.println("getAtIndex(): " + stringList.getAtIndex(-5) + stringList.getAtIndex(1));
 
         //stringList.clear();
         //System.out.println("getAtIndex(): " + stringList.getAtIndex(0))
-           */
+         */
     }
      
      
