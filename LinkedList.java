@@ -24,7 +24,6 @@ public class LinkedList<T> implements List<T> {
     // Interface methods
 
     public void addAtIndex(T data, int index) throws IllegalArgumentException {
-        Node<T> current = head;
 
         if (index > this.size || index < 0) {
             throw new IllegalArgumentException("Your index is out of the list bounds");
@@ -49,7 +48,7 @@ public class LinkedList<T> implements List<T> {
             return;
         }
 
-        
+        Node<T> current = head;
         Node<T> previous = current;
         if (current.getNext() != null) {
             current = current.getNext();
@@ -57,22 +56,17 @@ public class LinkedList<T> implements List<T> {
         int i = 1;
 
         while (current != null) {
-            previous = current;
-            current = current.getNext();
             if (i == index) {
                 break;
             }
+            previous = current;
+            current = current.getNext();
             i++;
         }
 
         previous.setNext(new Node<T>(data));
-        if (current != null) {
-            if (current.getNext() == null) {
-                this.tail = current;
-            } else {
-                previous.getNext().setNext(current);
-            }
-        } else { 
+        previous.getNext().setNext(current);
+        if (index == this.size) {
             this.tail = previous.getNext();
         }
         this.size = this.size + 1;
@@ -160,8 +154,12 @@ public class LinkedList<T> implements List<T> {
 
     public T remove(T data) throws NoSuchElementException {
 
+        if (data == null) {
+            throw new IllegalArgumentException("You cannot remove null data from the list");
+        }
+
         if (this.head == null) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("The data is not present in the list.");
         }
 
         T removedData;
@@ -170,8 +168,9 @@ public class LinkedList<T> implements List<T> {
             removedData = head.getData();
 
             if (this.head.getNext() == null) {
+                this.head = null;
                 this.tail = null;
-            } else if (this.head.getNext() != null) {
+            } else {
                 this.head = this.head.getNext();
             }
             this.size = this.size - 1;
@@ -199,7 +198,7 @@ public class LinkedList<T> implements List<T> {
             previous = current;
             current = current.getNext();
         }
-        throw new NoSuchElementException();
+        throw new NoSuchElementException("The data is not present in the list.");
     }
 
     public void clear() {
@@ -232,7 +231,19 @@ public class LinkedList<T> implements List<T> {
 
     
    public static void main(String argv[]) {
-        
+        /*
+        LinkedList<String> stringList = new LinkedList<String>();
+        stringList.addAtIndex("First Song", 0);
+        System.out.println("getAtIndex(0): " + stringList.getAtIndex(0));
+        System.out.println("removeAtIndex 0: " + stringList.removeAtIndex(0));
+        System.out.println("remove null: " + stringList.remove(null));
+        System.out.println("Size(): " + stringList.size());  */
+        //System.out.println("head data: " + stringList.head.getData());
+        //System.out.println("tail data: " + stringList.tail.getData());
+
+
+
+        /*
         LinkedList<String> stringList = new LinkedList<String>();
         stringList.addAtIndex("First Song", 0);
         stringList.addAtIndex("Second Song", 1);
@@ -240,21 +251,27 @@ public class LinkedList<T> implements List<T> {
         stringList.addAtIndex("Fourth Song", 3);
         stringList.addAtIndex("Fifth Song", 4);
         stringList.addAtIndex("Sixth Song", 5);
+        stringList.addAtIndex("Inbetween Song", 4);
+        System.out.println("tail data: " + stringList.tail.getData());
         System.out.println("getAtIndex(0-5): " + stringList.getAtIndex(0)
         + stringList.getAtIndex(1)
         + stringList.getAtIndex(2)
         + stringList.getAtIndex(3)
         + stringList.getAtIndex(4)
-        + stringList.getAtIndex(5));
-
+        + stringList.getAtIndex(5)
+        + stringList.getAtIndex(6)
+        );
+        
 
         System.out.println("Size(): " + stringList.size());
         System.out.println("removeAtIndex 0: " + stringList.removeAtIndex(0));
+        System.out.println("removeAtIndex 5: " + stringList.removeAtIndex(5));
         System.out.println("head data: " + stringList.head.getData());
+        System.out.println("tail data: " + stringList.tail.getData());
         System.out.println("Size(): " + stringList.size());
         stringList.addAtIndex("Fifth Song", 3);
         System.out.println("getAtIndex(0): " + stringList.getAtIndex(0));
-
+        */
         
     
         /*
