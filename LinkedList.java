@@ -36,6 +36,7 @@ public class LinkedList<T> implements List<T> {
 
         if (this.size == 0) {
             this.head = new Node<T>(data);
+            this.tail = this.head;
             this.size = this.size + 1;
             return;
         }
@@ -47,17 +48,33 @@ public class LinkedList<T> implements List<T> {
             this.size = this.size + 1;
             return;
         }
+
         
-        Node<T> previous = null;
-        int i = 0;
-        while (i < index) {
+        Node<T> previous = current;
+        if (current.getNext() != null) {
+            current = current.getNext();
+        }
+        int i = 1;
+
+        while (current != null) {
             previous = current;
             current = current.getNext();
+            if (i == index) {
+                break;
+            }
             i++;
         }
 
         previous.setNext(new Node<T>(data));
-        previous.getNext().setNext(current);
+        if (current != null) {
+            if (current.getNext() == null) {
+                this.tail = current;
+            } else {
+                previous.getNext().setNext(current);
+            }
+        } else { 
+            this.tail = previous.getNext();
+        }
         this.size = this.size + 1;
         return;
     }
@@ -65,12 +82,10 @@ public class LinkedList<T> implements List<T> {
 
     public T getAtIndex(int index) throws IllegalArgumentException {
 
-        
         if (index > this.size - 1 || index < 0) {
             throw new IllegalArgumentException("Invalid index");
         }
         
-
         Node<T> current = head;
         int indexCounter = 0;
 
@@ -108,19 +123,17 @@ public class LinkedList<T> implements List<T> {
 
         T removeData;
 
-        
         if (index == 0) {
             removeData = head.getData();
-            if (head.getNext() != null) {
-                head = head.getNext();
+            if (head.getNext() == null) {
+                this.head = null;
+                this.tail = null;
+            } else {
+                this.head = head.getNext();
             }
             this.size = size - 1;
             return removeData;
         }
-
-
-
-        // case: index > 0
 
         int indexCounter = 0;
         Node<T> previous = current;
@@ -129,6 +142,9 @@ public class LinkedList<T> implements List<T> {
 
             if (index == indexCounter) {
                 previous.setNext(current.getNext());
+                if (index == this.size - 1) {
+                    tail = previous;
+                }
                 removeData = current.getData();
                 current = null;
                 this.size = this.size - 1;
@@ -153,14 +169,10 @@ public class LinkedList<T> implements List<T> {
         if (this.head.getData() == data) {
             removedData = head.getData();
 
-            if (this.head == this.tail) {
+            if (this.head.getNext() == null) {
                 this.tail = null;
-            }
-
-            if (this.head.getNext() != null) {
+            } else if (this.head.getNext() != null) {
                 this.head = this.head.getNext();
-            } else {
-                this.head = null;
             }
             this.size = this.size - 1;
             return removedData;
@@ -177,7 +189,7 @@ public class LinkedList<T> implements List<T> {
                 removedData = current.getData();
                 this.size = this.size - 1;
 
-                if (current == this.tail) {
+                if (current.getNext() == null) {
                     this.tail = previous;
                 }
 
@@ -220,6 +232,30 @@ public class LinkedList<T> implements List<T> {
 
     
    public static void main(String argv[]) {
+        
+        LinkedList<String> stringList = new LinkedList<String>();
+        stringList.addAtIndex("First Song", 0);
+        stringList.addAtIndex("Second Song", 1);
+        stringList.addAtIndex("Third Song", 2);
+        stringList.addAtIndex("Fourth Song", 3);
+        stringList.addAtIndex("Fifth Song", 4);
+        stringList.addAtIndex("Sixth Song", 5);
+        System.out.println("getAtIndex(0-5): " + stringList.getAtIndex(0)
+        + stringList.getAtIndex(1)
+        + stringList.getAtIndex(2)
+        + stringList.getAtIndex(3)
+        + stringList.getAtIndex(4)
+        + stringList.getAtIndex(5));
+
+
+        System.out.println("Size(): " + stringList.size());
+        System.out.println("removeAtIndex 0: " + stringList.removeAtIndex(0));
+        System.out.println("head data: " + stringList.head.getData());
+        System.out.println("Size(): " + stringList.size());
+        stringList.addAtIndex("Fifth Song", 3);
+        System.out.println("getAtIndex(0): " + stringList.getAtIndex(0));
+
+        
     
         /*
         LinkedList<String> stringList = new LinkedList<String>();
